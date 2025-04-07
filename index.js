@@ -1,4 +1,7 @@
-import { checkIfLoggedIn, signInWithGoogle, checkForActiveGame, startNewGame, updateGameBoard, displayMessages, checkForActiveGameAndUpdateUI, makeMove } from './game.js';
+import { checkIfLoggedIn, signInWithGoogle } from './auth.js';
+import { startNewGame, makeMove } from './api.js';
+import { updateGameBoard, displayMessages, checkForActiveGameAndUpdateUI } from './ui.js';
+import { checkForActiveGame } from './database.js';
 
 // Add event listeners for the Google login and start game buttons
 document.getElementById('google-login').addEventListener('click', async () => {
