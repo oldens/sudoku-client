@@ -1,2 +1,1 @@
-# sudoku-client
-A repository for a multiplayer Sudoku game client
+This repository is empty. Any task executed on it should be considered a new capability and needs to be created.
