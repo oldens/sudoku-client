@@ -84,9 +84,7 @@ export async function startNewGame() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Оновлюємо сторінку після створення нової гри
-        window.location.reload();
-        
+        // Не чекаємо відповіді, оскільки дані прийдуть через onValue
         return null;
     } catch (error) {
         console.error("Помилка при створенні нової гри:", error);
@@ -220,20 +218,10 @@ export async function checkForActiveGameAndUpdateUI() {
         const user = await checkIfLoggedIn();
         const userInfoDiv = document.getElementById('user-info');
         userInfoDiv.textContent = `👤 Привіт, ${user.displayName}!`;
-        
         const gameData = await checkForActiveGame();
-        if (!gameData) {
-            // Якщо гри немає, відразу показуємо повідомлення
-            const gameBoardDiv = document.getElementById('game-board');
-            gameBoardDiv.innerHTML = '';
-            const noGameMessage = document.createElement('div');
-            noGameMessage.className = 'no-game-message';
-            noGameMessage.textContent = 'Активної гри не знайдено. Натисніть "Почати нову гру", щоб створити її.';
-            gameBoardDiv.appendChild(noGameMessage);
-            return;
+        if (gameData) {
+            updateGameBoard(gameData);
         }
-        
-        updateGameBoard(gameData);
     } catch (error) {
         const userInfoDiv = document.getElementById('user-info');
         userInfoDiv.textContent = '';

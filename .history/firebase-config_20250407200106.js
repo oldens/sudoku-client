@@ -1,6 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
+import { getDatabase } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-database.js";
+import { getAuth, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/11.5.0/firebase-auth.js";
 
 // Your Firebase configuration
 const firebaseConfig = {
@@ -19,4 +19,3 @@ export const app = initializeApp(firebaseConfig);
 export const db = getDatabase(app);
 export const auth = getAuth(app);
 export const provider = new GoogleAuthProvider();
-export { ref, set, onValue, signInWithPopup };

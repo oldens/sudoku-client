@@ -1,4 +1,4 @@
-import { checkIfLoggedIn, signInWithGoogle, checkForActiveGame, startNewGame, updateGameBoard, displayMessages, checkForActiveGameAndUpdateUI, makeMove } from './game.js';
+import { checkIfLoggedIn, signInWithGoogle, checkForActiveGame, startNewGame, updateGameBoard, displayMessages } from './game.js';
 
 // Add event listeners for the Google login and start game buttons
 document.getElementById('google-login').addEventListener('click', async () => {
@@ -13,15 +13,33 @@ document.getElementById('google-login').addEventListener('click', async () => {
 document.getElementById('start-game').addEventListener('click', async () => {
     try {
         const gameData = await startNewGame();
-        updateGameBoard(gameData);
+        updateGameBoard(gameData.board);
     } catch (error) {
         console.error("Error starting new game:", error);
     }
 });
 
+// Check if the player is logged in and display the appropriate UI
+async function checkForActiveGameAndUpdateUI() {
+    try {
+        const user = await checkIfLoggedIn();
+        document.getElementById('google-login').style.display = 'none';
+        document.getElementById('start-game').style.display = 'block';
+        const gameData = await checkForActiveGame();
+        if (gameData) {
+            updateGameBoard(gameData.board);
+        } else {
+            document.getElementById('start-game').style.display = 'block';
+        }
+    } catch (error) {
+        document.getElementById('google-login').style.display = 'block';
+        document.getElementById('start-game').style.display = 'none';
+    }
+}
+
 // Add event listeners for making moves on the game board
 document.getElementById('game-board').addEventListener('click', async (event) => {
-    if (event.target.classList.contains('cell')) {
+    if (event.target.tagName === 'DIV') {
         const row = event.target.dataset.row;
         const col = event.target.dataset.col;
         const value = prompt('Enter a value:');
@@ -30,7 +48,7 @@ document.getElementById('game-board').addEventListener('click', async (event) =>
                 const user = await checkIfLoggedIn();
                 await makeMove(row, col, parseInt(value), user.uid, user.displayName);
                 const gameData = await checkForActiveGame();
-                updateGameBoard(gameData);
+                updateGameBoard(gameData.board);
             } catch (error) {
                 console.error("Error making move:", error);
             }

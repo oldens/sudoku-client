@@ -84,9 +84,7 @@ export async function startNewGame() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        // Оновлюємо сторінку після створення нової гри
-        window.location.reload();
-        
+        // Не чекаємо відповіді, оскільки дані прийдуть через onValue
         return null;
     } catch (error) {
         console.error("Помилка при створенні нової гри:", error);

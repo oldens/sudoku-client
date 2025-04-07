@@ -23,44 +23,10 @@ h1 {
 .players-info {
     margin-bottom: 20px;
     padding: 15px;
-    background-color: #f8f9fa;
+    background-color: #fff;
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.players-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.player-item {
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    background-color: white;
-    border-radius: 6px;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.player-rank {
-    width: 30px;
-    font-weight: bold;
-    color: #6c757d;
-}
-
-.player-name {
-    flex: 1;
-    font-weight: 500;
-    color: #212529;
-}
-
-.player-score {
-    font-weight: bold;
-    color: #28a745;
-    padding: 4px 8px;
-    background-color: #e8f5e9;
-    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 1.2em;
 }
 
 .board {
@@ -130,15 +96,4 @@ button:hover {
     min-width: 400px;
     text-align: center;
     font-size: 1.2em;
-}
-
-.no-game-message {
-    text-align: center;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #6c757d;
-    font-size: 1.2em;
-    margin: 20px 0;
 }

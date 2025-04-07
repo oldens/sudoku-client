@@ -71,27 +71,41 @@ export function checkForActiveGame() {
 
 // Start a new game
 export async function startNewGame() {
-    try {
-        // Робимо запит до API для створення нової гри
-        const response = await fetch('https://sudoku-378406934320.us-central1.run.app/game/active', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json'
+    return new Promise((resolve, reject) => {
+        const gameRef = ref(db, 'games/active');
+        onValue(gameRef, (snapshot) => {
+            const data = snapshot.val();
+            console.log("Дані з бази даних:", data);
+            if (data) {
+                // Перевіряємо формат даних
+                if (data.board) {
+                    console.log("Знайдено активну гру", data.board);
+                    // Якщо є поле board, використовуємо його
+                    resolve(data);
+                } else if (Array.isArray(data)) {
+                    // Якщо data - це масив, використовуємо його як дошку
+                    resolve({
+                        board: data,
+                        players: {}
+                    });
+                } else {
+                    console.error("Невірний формат даних гри:", data);
+                    resolve(null);
+                }
+            } else {
+                // Якщо гри немає, робимо запит до API для створення нової
+                fetch('https://sudoku-378406934320.us-central1.run.app/game/active', {
+                    method: 'POST'
+                }).catch(error => {
+                    console.error("Помилка при створенні нової гри:", error);
+                });
+                // Не чекаємо відповіді, оскільки дані прийдуть через onValue
+                resolve(null);
             }
+        }, (error) => {
+            reject(error);
         });
-
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        // Оновлюємо сторінку після створення нової гри
-        window.location.reload();
-        
-        return null;
-    } catch (error) {
-        console.error("Помилка при створенні нової гри:", error);
-        throw error;
-    }
+    });
 }
 
 // Make a move
@@ -115,29 +129,17 @@ export async function makeMove(row, col, value, userId, userName) {
 
 // Update the game board
 export function updateGameBoard(gameData) {
-    const gameBoardDiv = document.getElementById('game-board');
-    gameBoardDiv.innerHTML = '';
-
-    // Якщо гри немає, показуємо повідомлення
-    if (!gameData) {
-        const noGameMessage = document.createElement('div');
-        noGameMessage.className = 'no-game-message';
-        noGameMessage.textContent = 'Активної гри не знайдено. Натисніть "Почати нову гру", щоб створити її.';
-        gameBoardDiv.appendChild(noGameMessage);
-        return;
-    }
-
     // Перевіряємо формат даних
     let board;
-    let players = [];
+    let players = {};
 
     if (Array.isArray(gameData)) {
         // Якщо gameData - це масив (дошка)
         board = gameData;
     } else if (gameData && gameData.board) {
         // Якщо gameData - це об'єкт з полем board
-        board = typeof gameData.board === 'string' ? JSON.parse(gameData.board) : gameData.board;
-        players = gameData.players || [];
+        board = gameData.board;
+        players = gameData.players || {};
     } else {
         console.error("Невірний формат даних гри:", gameData);
         return;
@@ -149,42 +151,18 @@ export function updateGameBoard(gameData) {
         return;
     }
 
+    const gameBoardDiv = document.getElementById('game-board');
+    gameBoardDiv.innerHTML = '';
+
     // Показуємо інформацію про гравців
     const playersInfo = document.createElement('div');
     playersInfo.className = 'players-info';
-    
-    if (players.length > 0) {
-        // Сортуємо гравців за рахунком
-        const sortedPlayers = [...players].sort((a, b) => b.score - a.score);
-        
-        const playersList = document.createElement('div');
-        playersList.className = 'players-list';
-        
-        sortedPlayers.forEach((player, index) => {
-            const playerDiv = document.createElement('div');
-            playerDiv.className = 'player-item';
-            
-            const rankDiv = document.createElement('div');
-            rankDiv.className = 'player-rank';
-            rankDiv.textContent = `${index + 1}.`;
-            
-            const nameDiv = document.createElement('div');
-            nameDiv.className = 'player-name';
-            nameDiv.textContent = player.userName;
-            
-            const scoreDiv = document.createElement('div');
-            scoreDiv.className = 'player-score';
-            scoreDiv.textContent = `🏆 ${player.score}`;
-            
-            playerDiv.appendChild(rankDiv);
-            playerDiv.appendChild(nameDiv);
-            playerDiv.appendChild(scoreDiv);
-            playersList.appendChild(playerDiv);
-        });
-        
-        playersInfo.appendChild(playersList);
+    if (Object.keys(players).length > 0) {
+        const playersList = Object.entries(players)
+            .map(([id, player]) => `${player.name || 'Гравець'}`)
+            .join(', ');
+        playersInfo.textContent = `Гравці: ${playersList}`;
     }
-    
     gameBoardDiv.appendChild(playersInfo);
 
     // Створюємо дошку гри
@@ -220,20 +198,10 @@ export async function checkForActiveGameAndUpdateUI() {
         const user = await checkIfLoggedIn();
         const userInfoDiv = document.getElementById('user-info');
         userInfoDiv.textContent = `👤 Привіт, ${user.displayName}!`;
-        
         const gameData = await checkForActiveGame();
-        if (!gameData) {
-            // Якщо гри немає, відразу показуємо повідомлення
-            const gameBoardDiv = document.getElementById('game-board');
-            gameBoardDiv.innerHTML = '';
-            const noGameMessage = document.createElement('div');
-            noGameMessage.className = 'no-game-message';
-            noGameMessage.textContent = 'Активної гри не знайдено. Натисніть "Почати нову гру", щоб створити її.';
-            gameBoardDiv.appendChild(noGameMessage);
-            return;
+        if (gameData) {
+            updateGameBoard(gameData);
         }
-        
-        updateGameBoard(gameData);
     } catch (error) {
         const userInfoDiv = document.getElementById('user-info');
         userInfoDiv.textContent = '';

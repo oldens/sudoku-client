@@ -131,14 +131,3 @@ button:hover {
     text-align: center;
     font-size: 1.2em;
 }
-
-.no-game-message {
-    text-align: center;
-    padding: 20px;
-    background-color: #f8f9fa;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    color: #6c757d;
-    font-size: 1.2em;
-    margin: 20px 0;
-}
