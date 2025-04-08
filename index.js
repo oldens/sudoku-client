@@ -1,4 +1,12 @@
-import { checkIfLoggedIn, signInWithGoogle, checkForActiveGame, startNewGame, updateGameBoard, displayMessages, checkForActiveGameAndUpdateUI, makeMove } from './game.js';
+/**
+ * @file index.js
+ * @description This file handles event listeners and UI updates for the Sudoku Multiplayer Game.
+ * It includes functions to handle user interactions such as logging in with Google, starting a new game, and making moves on the game board.
+ */
+
+import { checkIfLoggedIn, signInWithGoogle } from './auth.js';
+import { checkForActiveGame, startNewGame, makeMove } from './gameState.js';
+import { updateGameBoard, displayMessages, checkForActiveGameAndUpdateUI } from './ui.js';
 
 // Add event listeners for the Google login and start game buttons
 document.getElementById('google-login').addEventListener('click', async () => {
