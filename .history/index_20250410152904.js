@@ -3,9 +3,14 @@ import { signInWithGoogle, checkIfLoggedIn } from './auth.js';
 
 // Імпорти для роботи з грою
 import { makeMove, startNewGame } from './api.js';
+import { checkForActiveGame } from './firebase.js';
 
-// Імпорт для UI
-import { checkForActiveGameAndUpdateUI } from './game.js';
+// Імпорти для UI
+import { 
+    updateGameBoard, 
+    displayMessages, 
+    checkForActiveGameAndUpdateUI 
+} from './game.js';
 
 // Обробники подій
 document.getElementById('google-login').addEventListener('click', () => 

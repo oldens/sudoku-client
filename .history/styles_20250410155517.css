@@ -69,12 +69,13 @@ h1 {
 .board {
     display: grid;
     grid-template-columns: repeat(9, 1fr);
+    gap: 2px;
     background-color: #333;
+    padding: 4px;
     border: 3px solid #333;
     border-radius: 8px;
     max-width: 800px;
     width: 100%;
-    overflow: hidden; /* щоб рамки не виступали */
 }
 
 .cell {
@@ -85,38 +86,27 @@ h1 {
     background-color: white;
     font-size: 2em;
     cursor: pointer;
-    min-height: 40px;
-    box-sizing: border-box;
-    border: 1px solid #ccc; /* стандартна тонка сітка */
     transition: background-color 0.2s;
+    min-height: 40px;
+}
+.cell:hover {
+    background-color: #eee;
 }
 
-/* Товсті вертикальні лінії після 3, 6, 9 стовпця */
+/* Стилі для блоків 3x3 */
 .cell:nth-child(3n) {
     border-right: 3px solid #333;
 }
 
-/* Товсті горизонтальні лінії після 3, 6, 9 рядка */
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54),
-.cell:nth-child(n+73) {
-    border-bottom: 3px solid #333;
+.cell:nth-child(9n) {
+    border-right: none;
 }
 
-/* Товсті ліві і верхні межі першого блоку */
-.cell:nth-child(1),
-.cell:nth-child(10),
-.cell:nth-child(19),
-.cell:nth-child(28),
-.cell:nth-child(37),
-.cell:nth-child(46),
-.cell:nth-child(55),
-.cell:nth-child(64),
-.cell:nth-child(73) {
-    border-left: 3px solid #333;
-}
-.cell:nth-child(-n+9) {
-    border-top: 3px solid #333;
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 3px solid #333;
+        border-right: 3px solid #333;
+
 }
 
 button {

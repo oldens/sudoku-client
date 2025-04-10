@@ -1,4 +1,4 @@
-import { auth, provider } from './firebase-config.js';
+import { auth, provider, signInWithPopup } from './firebase-config.js';
 
 // Перевірити, чи користувач увійшов
 export function checkIfLoggedIn() {
@@ -15,14 +15,11 @@ export function checkIfLoggedIn() {
 
 
 // Увійти через Google
-// Log in with Google
 export async function signInWithGoogle() {
     try {
         const result = await signInWithPopup(auth, provider);
         const user = result.user;
         console.log("Успішний вхід:", user.displayName);
-        // Оновлюємо UI після успішного входу
-        await checkForActiveGameAndUpdateUI();
         return user;
     } catch (error) {
         console.error("Помилка входу через Google:", error);

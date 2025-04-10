@@ -96,27 +96,22 @@ h1 {
     border-right: 3px solid #333;
 }
 
-/* Товсті горизонтальні лінії після 3, 6, 9 рядка */
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54),
-.cell:nth-child(n+73) {
-    border-bottom: 3px solid #333;
+/* Товсті нижні межі після 3-го і 6-го рядка */
+.cell:nth-child(27n),
+.cell:nth-child(54n) {
+  border-bottom: 3px solid #333;
 }
 
-/* Товсті ліві і верхні межі першого блоку */
-.cell:nth-child(1),
-.cell:nth-child(10),
-.cell:nth-child(19),
-.cell:nth-child(28),
-.cell:nth-child(37),
-.cell:nth-child(46),
-.cell:nth-child(55),
-.cell:nth-child(64),
-.cell:nth-child(73) {
-    border-left: 3px solid #333;
+/* Ліва межа кожного 3x3 блоку */
+.cell:nth-child(9n+1),
+.cell:nth-child(9n-8),
+.cell:nth-child(9n-17) {
+  border-left: 3px solid #333;
 }
+
+/* Верхні межі */
 .cell:nth-child(-n+9) {
-    border-top: 3px solid #333;
+  border-top: 3px solid #333;
 }
 
 button {

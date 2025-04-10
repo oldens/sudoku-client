@@ -1,4 +1,4 @@
-import { auth, provider } from './firebase-config.js';
+import { auth, provider, signInWithPopup } from './firebase-config.js';
 
 // Перевірити, чи користувач увійшов
 export function checkIfLoggedIn() {

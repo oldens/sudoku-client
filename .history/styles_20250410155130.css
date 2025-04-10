@@ -1,0 +1,47 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(9, 1fr);
+    gap: 0; /* прибираємо gap */
+    background-color: #333;
+    border-radius: 8px;
+    overflow: hidden;
+    max-width: 800px;
+    width: 100%;
+}
+
+/* Усі клітинки */
+.cell {
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    font-size: 2em;
+    cursor: pointer;
+    min-height: 40px;
+    box-sizing: border-box;
+    border: 1px solid #ccc; /* легка сітка */
+}
+
+/* Міцніші рамки для блоків 3x3 */
+.cell {
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+
+.cell:nth-child(3n) {
+    border-right: 3px solid #333;
+}
+
+.cell:nth-child(9n) {
+    border-right: none;
+}
+
+.cell:nth-child(n+19):nth-child(-n+27),
+.cell:nth-child(n+46):nth-child(-n+54) {
+    border-bottom: 3px solid #333;
+}
+
+.cell:nth-child(n+73) {
+    border-bottom: none;
+}

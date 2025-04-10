@@ -91,33 +91,31 @@ h1 {
     transition: background-color 0.2s;
 }
 
-/* Товсті вертикальні лінії після 3, 6, 9 стовпця */
-.cell:nth-child(3n) {
-    border-right: 3px solid #333;
-}
-
-/* Товсті горизонтальні лінії після 3, 6, 9 рядка */
-.cell:nth-child(n+19):nth-child(-n+27),
-.cell:nth-child(n+46):nth-child(-n+54),
-.cell:nth-child(n+73) {
+.cell {
+    border: 1px solid #ccc;
+  }
+  
+  /* Товсті горизонтальні лінії після 3 і 6 рядка */
+  .cell[row="3"],
+  .cell[row="6"] {
     border-bottom: 3px solid #333;
-}
-
-/* Товсті ліві і верхні межі першого блоку */
-.cell:nth-child(1),
-.cell:nth-child(10),
-.cell:nth-child(19),
-.cell:nth-child(28),
-.cell:nth-child(37),
-.cell:nth-child(46),
-.cell:nth-child(55),
-.cell:nth-child(64),
-.cell:nth-child(73) {
+  }
+  
+  /* Товсті вертикальні лінії після 3 і 6 стовпця */
+  .cell[col="3"],
+  .cell[col="6"] {
+    border-right: 3px solid #333;
+  }
+  
+  /* Ліва межа */
+  .cell[col="1"] {
     border-left: 3px solid #333;
-}
-.cell:nth-child(-n+9) {
+  }
+  
+  /* Верхня межа */
+  .cell[row="1"] {
     border-top: 3px solid #333;
-}
+  }
 
 button {
     margin: 15px;

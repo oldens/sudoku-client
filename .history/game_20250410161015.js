@@ -20,17 +20,18 @@ export function updateGameBoard(gameData) {
         return;
     }
 
-    const { board, players } = parseGameData(gameData);
+    const board = parseBoard(gameData);
+    const players = extractPlayers(gameData);
 
     if (!isValidBoard(board)) {
         console.error("Невірний формат дошки:", board);
-        displayMessages(["Невірний формат дошки"]);
         return;
     }
 
     renderPlayersInfo(players, gameBoardDiv);
     renderBoard(board, gameBoardDiv);
 }
+
 
 export function displayMessages(messages) {
     const messagesDiv = document.getElementById('messages');
@@ -45,7 +46,8 @@ export function displayMessages(messages) {
 export async function checkForActiveGameAndUpdateUI() {
     try {
         const user = await checkIfLoggedIn();
-        updateUserInfo(user);
+        const userInfoDiv = document.getElementById('user-info');
+        userInfoDiv.textContent = `👤 Привіт, ${user.displayName}!`;
         
         const gameData = await checkForActiveGame();
         if (!gameData) {
@@ -55,15 +57,10 @@ export async function checkForActiveGameAndUpdateUI() {
         
         updateGameBoard(gameData);
     } catch (error) {
-        updateUserInfo(null);
+        const userInfoDiv = document.getElementById('user-info');
+        userInfoDiv.textContent = '';
     }
 }
-
-function updateUserInfo(user) {
-    const userInfoDiv = document.getElementById('user-info');
-    userInfoDiv.textContent = user ? `👤 Привіт, ${user.displayName}!` : '';
-}
-
 // Показати повідомлення про відсутність активної гри
 function showNoGameMessage() {
     const gameBoardDiv = document.getElementById('game-board');
@@ -74,21 +71,23 @@ function showNoGameMessage() {
     gameBoardDiv.appendChild(noGameMessage);
 }
 
-function parseGameData(gameData) {
+function parseBoard(gameData) {
     if (Array.isArray(gameData)) {
-        return { board: [], players: [] };
+        return gameData;
     }
 
     if (gameData && gameData.board) {
-        const board = typeof gameData.board === 'string'
+        return typeof gameData.board === 'string'
             ? JSON.parse(gameData.board)
             : gameData.board;
-        const players = gameData.players || [];
-        return { board, players };
     }
 
     console.error("Невірний формат даних гри:", gameData);
-    return { board: null, players: [] };
+    return null;
+}
+
+function extractPlayers(gameData) {
+    return Array.isArray(gameData) ? [] : gameData.players || [];
 }
 
 function isValidBoard(board) {

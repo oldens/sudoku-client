@@ -3,9 +3,14 @@ import { signInWithGoogle, checkIfLoggedIn } from './auth.js';
 
 // Імпорти для роботи з грою
 import { makeMove, startNewGame } from './api.js';
+import { checkForActiveGame } from './firebase.js';
 
-// Імпорт для UI
-import { checkForActiveGameAndUpdateUI } from './game.js';
+// Імпорти для UI
+import { 
+    updateGameBoard, 
+    displayMessages, 
+    checkForActiveGameAndUpdateUI 
+} from './game.js';
 
 // Обробники подій
 document.getElementById('google-login').addEventListener('click', () => 
@@ -31,7 +36,8 @@ document.getElementById('game-board').addEventListener('click', async (event) =>
             try {
                 const user = await checkIfLoggedIn();
                 await makeMove(row, col, parseInt(value), user.uid, user.displayName);
-                await checkForActiveGameAndUpdateUI();
+                const gameData = await checkForActiveGame();
+                updateGameBoard(gameData);
             } catch (error) {
                 console.error("Error making move:", error);
                 if (error.message === 'No user logged in') {
