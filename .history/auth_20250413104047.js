@@ -22,6 +22,7 @@ export async function signInWithGoogle() {
         const user = result.user;
         console.log("Успішний вхід:", user.displayName);
         // Оновлюємо UI після успішного входу
+        await checkForActiveGameAndUpdateUI();
         return user;
     } catch (error) {
         console.error("Помилка входу через Google:", error);
