@@ -21,7 +21,6 @@ export async function updateGameBoard(gameData) {
 
     const user = await checkIfLoggedIn();
         updateUserInfo(user);
-        
 
     const { board, players } = parseGameData(gameData);
 

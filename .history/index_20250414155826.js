@@ -5,17 +5,18 @@ import { signInWithGoogle, checkIfLoggedIn } from './auth.js';
 import { makeMove, startNewGame } from './api.js';
 
 // Імпорт для UI
+import { checkForActiveGameAndUpdateUI } from './game.js';
 
 // Обробники подій
 document.getElementById('google-login').addEventListener('click', () => 
     signInWithGoogle()
-        .then()
+        .then(checkForActiveGameAndUpdateUI)
         .catch(error => console.error("Error during Google login:", error))
 );
 
 document.getElementById('start-game').addEventListener('click', () => 
     startNewGame()
-        .then()
+        .then(checkForActiveGameAndUpdateUI)
         .catch(error => console.error("Error starting new game:", error))
 );
 
@@ -25,11 +26,12 @@ document.getElementById('game-board').addEventListener('click', async (event) =>
         const row = event.target.dataset.row;
         const col = event.target.dataset.col;
         const value = prompt('Enter a value:');
+        
         if (value) {
             try {
                 const user = await checkIfLoggedIn();
                 await makeMove(row, col, parseInt(value), user.uid, user.displayName);
-    
+                await checkForActiveGameAndUpdateUI();
             } catch (error) {
                 console.error("Error making move:", error);
                 if (error.message === 'No user logged in') {
@@ -41,4 +43,4 @@ document.getElementById('game-board').addEventListener('click', async (event) =>
 });
 
 // Initial check for active game and update UI
-
+checkForActiveGameAndUpdateUI();

@@ -12,7 +12,16 @@ export function initFirebaseListener(clb) {
             if (!data) {
                 return ;
             }
-        
+            
+            if (Array.isArray(data)) {
+                return resolve({
+                    board: data,
+                    players: [],
+                    moves: [],
+                    isActive: true
+                });
+            }
+            
             if (data.board) {
                 const board = typeof data.board === 'string' 
                     ? JSON.parse(data.board) 

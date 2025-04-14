@@ -1,16 +1,17 @@
 // Імпорти зовнішніх функцій
 import { checkIfLoggedIn } from './auth.js';
-import { initFirebaseListener } from './firebase.js';
+import { checkForActiveGame, initFirebaseListener } from './firebase.js';
 import { startNewGame, makeMove } from './api.js';
 
 // Реекспорт функцій, які потрібні в інших модулях
 export { 
     checkIfLoggedIn,
+
     startNewGame,
     makeMove 
 };
 
-export async function updateGameBoard(gameData) {
+export function updateGameBoard(gameData) {
     const gameBoardDiv = document.getElementById('game-board');
     gameBoardDiv.innerHTML = '';
 
@@ -19,10 +20,6 @@ export async function updateGameBoard(gameData) {
         return;
     }
 
-    const user = await checkIfLoggedIn();
-        updateUserInfo(user);
-        
-
     const { board, players } = parseGameData(gameData);
 
     if (!isValidBoard(board)) {
@@ -30,7 +27,6 @@ export async function updateGameBoard(gameData) {
         displayMessages(["Невірний формат дошки"]);
         return;
     }
-
 
     renderPlayersInfo(players, gameBoardDiv);
     renderBoard(board, gameBoardDiv);
@@ -48,6 +44,23 @@ export function displayMessages(messages) {
     });
 }
 
+export async function checkForActiveGameAndUpdateUI() {
+    console.log("checkForActiveGameAndUpdateUI");
+    try {
+        const user = await checkIfLoggedIn();
+        updateUserInfo(user);
+        
+        const gameData = await checkForActiveGame();
+        if (!gameData) {
+            showNoGameMessage();
+            return;
+        }
+        
+        updateGameBoard(gameData);
+    } catch (error) {
+        updateUserInfo(null);
+    }
+}
 
 function updateUserInfo(user) {
     const userInfoDiv = document.getElementById('user-info');

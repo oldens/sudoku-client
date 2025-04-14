@@ -10,7 +10,7 @@ export {
     makeMove 
 };
 
-export async function updateGameBoard(gameData) {
+export function updateGameBoard(gameData) {
     const gameBoardDiv = document.getElementById('game-board');
     gameBoardDiv.innerHTML = '';
 
@@ -21,7 +21,6 @@ export async function updateGameBoard(gameData) {
 
     const user = await checkIfLoggedIn();
         updateUserInfo(user);
-        
 
     const { board, players } = parseGameData(gameData);
 

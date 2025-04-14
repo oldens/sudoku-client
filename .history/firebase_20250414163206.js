@@ -10,9 +10,18 @@ export function initFirebaseListener(clb) {
             console.log("Дані з бази даних:", data);
             
             if (!data) {
-                return ;
+                return resolve(null);
             }
-        
+            
+            if (Array.isArray(data)) {
+                return resolve({
+                    board: data,
+                    players: [],
+                    moves: [],
+                    isActive: true
+                });
+            }
+            
             if (data.board) {
                 const board = typeof data.board === 'string' 
                     ? JSON.parse(data.board) 

@@ -5,6 +5,7 @@ import { signInWithGoogle, checkIfLoggedIn } from './auth.js';
 import { makeMove, startNewGame } from './api.js';
 
 // Імпорт для UI
+import { checkForActiveGameAndUpdateUI } from './game.js';
 
 // Обробники подій
 document.getElementById('google-login').addEventListener('click', () => 
@@ -15,7 +16,7 @@ document.getElementById('google-login').addEventListener('click', () =>
 
 document.getElementById('start-game').addEventListener('click', () => 
     startNewGame()
-        .then()
+        .then(checkForActiveGameAndUpdateUI)
         .catch(error => console.error("Error starting new game:", error))
 );
 

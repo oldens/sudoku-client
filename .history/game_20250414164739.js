@@ -10,7 +10,7 @@ export {
     makeMove 
 };
 
-export async function updateGameBoard(gameData) {
+export function updateGameBoard(gameData) {
     const gameBoardDiv = document.getElementById('game-board');
     gameBoardDiv.innerHTML = '';
 
@@ -18,10 +18,6 @@ export async function updateGameBoard(gameData) {
         showNoGameMessage();
         return;
     }
-
-    const user = await checkIfLoggedIn();
-        updateUserInfo(user);
-        
 
     const { board, players } = parseGameData(gameData);
 
@@ -31,7 +27,7 @@ export async function updateGameBoard(gameData) {
         return;
     }
 
-
+    
     renderPlayersInfo(players, gameBoardDiv);
     renderBoard(board, gameBoardDiv);
 }
@@ -48,6 +44,22 @@ export function displayMessages(messages) {
     });
 }
 
+export async function checkForActiveGameAndUpdateUI() {
+    console.log("checkForActiveGameAndUpdateUI");
+    try {
+        const user = await checkIfLoggedIn();
+        updateUserInfo(user);
+        
+        if (!game && !game.isActive) {
+            showNoGameMessage();
+            return;
+    
+          }
+        
+    } catch (error) {
+        updateUserInfo(null);
+    }
+}
 
 function updateUserInfo(user) {
     const userInfoDiv = document.getElementById('user-info');

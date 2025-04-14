@@ -5,6 +5,7 @@ import { signInWithGoogle, checkIfLoggedIn } from './auth.js';
 import { makeMove, startNewGame } from './api.js';
 
 // Імпорт для UI
+import { checkForActiveGameAndUpdateUI } from './game.js';
 
 // Обробники подій
 document.getElementById('google-login').addEventListener('click', () => 
